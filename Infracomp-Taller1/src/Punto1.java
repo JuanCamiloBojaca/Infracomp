@@ -1,22 +1,44 @@
-package punto_1;
 
-public class Main {
+
+public class Punto1 extends Thread {
 	private static int[][] matriz;
 	private static int total = 0;
 
-	public static int[][] getMatriz() {
-		return matriz;
+	private int id;
+	private int suma;
+	private boolean fin;
+
+	public Punto1(int id) {
+		this.id = id;
+		this.suma = 0;
+		this.fin = false;
+	}
+
+	@Override
+	public void run() {
+		int[] fila = matriz[id];
+		for (int i = 0; i < fila.length; i++)
+			suma += fila[i];
+		fin = true;
+	}
+
+	public int getSuma() {
+		return suma;
+	}
+
+	public boolean termino() {
+		return fin;
 	}
 
 	public static void main(String[] args) {
 		int numeroFilas = 100;
 		crearMatriz(numeroFilas);
-
-		Sumador[] threads = new Sumador[numeroFilas];
+		
+		Punto1[] threads = new Punto1[numeroFilas];
 		for (int a = 0; a < numeroFilas; a++)
-			(threads[a] = new Sumador(a)).start();
+			(threads[a] = new Punto1(a)).start();
 
-		for (Sumador sum : threads) {
+		for (Punto1 sum : threads) {
 			while (!sum.termino())
 				;
 			total += sum.getSuma();
@@ -38,5 +60,4 @@ public class Main {
 			}
 		}
 	}
-
 }
