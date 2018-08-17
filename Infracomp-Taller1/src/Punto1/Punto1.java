@@ -1,7 +1,7 @@
 package Punto1;
 
 public class Punto1 {
-	private static int[][] matriz;
+	public static int[][] matriz;
 	private static int total = 0;
 
 	private static void crearMatriz(int n) {
