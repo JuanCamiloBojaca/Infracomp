@@ -17,7 +17,8 @@ public class Punto1 {
 			(threads[a] = new Sumador(a)).start();
 
 		for (Sumador sum : threads) {
-			while (!sum.termino());
+			while (!sum.termino())
+				;
 			total += sum.getSuma();
 		}
 
