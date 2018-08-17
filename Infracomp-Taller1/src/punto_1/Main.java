@@ -1,6 +1,6 @@
-package Punto1;
+package punto_1;
 
-public class Punto1 {
+public class Main {
 	private static int[][] matriz;
 	private static int total = 0;
 
@@ -9,7 +9,7 @@ public class Punto1 {
 	}
 
 	public static void main(String[] args) {
-		int numeroFilas = 10;
+		int numeroFilas = 100;
 		crearMatriz(numeroFilas);
 
 		Sumador[] threads = new Sumador[numeroFilas];
@@ -23,6 +23,8 @@ public class Punto1 {
 		}
 
 		System.out.println("La suma es: " + total);
+		System.out.println(
+				"La respuesta debe ser: " + ((numeroFilas * numeroFilas) * (numeroFilas * numeroFilas - 1)) / 2);
 	}
 
 	private static void crearMatriz(int n) {

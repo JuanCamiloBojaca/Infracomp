@@ -1,4 +1,4 @@
-package Punto1;
+package punto_1;
 
 public class Sumador extends Thread {
 	private int id;
@@ -13,7 +13,7 @@ public class Sumador extends Thread {
 
 	@Override
 	public void run() {
-		int[] fila = Punto1.getMatriz()[id];
+		int[] fila = Main.getMatriz()[id];
 		for (int i = 0; i < fila.length; i++)
 			suma += fila[i];
 		fin = true;
