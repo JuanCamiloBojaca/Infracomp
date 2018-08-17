@@ -16,6 +16,8 @@ public class Punto1 {
 		}
 	}
 
+	
+	
 	public static void main(String[] args) {
 		int i;
 		int numeroFilas = 10; // Número de filas de la matriz
