@@ -1,5 +1,5 @@
 
-public class Punto1 extends Thread {
+public class Punto1_modificacion extends Thread {
 	private static int[][] matriz;
 	private static int total = 0;
 
@@ -7,7 +7,7 @@ public class Punto1 extends Thread {
 	private int suma;
 	private boolean fin;
 
-	public Punto1(int id) {
+	public Punto1_modificacion(int id) {
 		this.id = id;
 		this.suma = 0;
 		this.fin = false;
@@ -18,31 +18,30 @@ public class Punto1 extends Thread {
 		int[] fila = matriz[id];
 		for (int i = 0; i < fila.length; i++)
 			suma += fila[i];
-		fin = true;
-	}
 
-	public int getSuma() {
-		return suma;
+		add(suma);
+		fin = true;
 	}
 
 	public boolean termino() {
 		return fin;
 	}
 
+	public static synchronized void add(int suma) {
+		total += suma;
+	}
+
 	public static void main(String[] args) {
 		int numeroFilas = 100;
 		crearMatriz(numeroFilas);
 
-		Punto1[] threads = new Punto1[numeroFilas];
+		Punto1_modificacion[] threads = new Punto1_modificacion[numeroFilas];
 		for (int a = 0; a < numeroFilas; a++)
-			(threads[a] = new Punto1(a)).start();
+			(threads[a] = new Punto1_modificacion(a)).start();
 
-		for (Punto1 sum : threads)
+		for (Punto1_modificacion sum : threads)
 			while (!sum.termino())
 				;
-
-		for (Punto1 sum : threads)
-			total += sum.getSuma();
 
 		System.out.println("La suma es: " + total);
 		System.out.println(
