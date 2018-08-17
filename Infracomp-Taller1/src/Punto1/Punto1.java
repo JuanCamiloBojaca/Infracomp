@@ -1,8 +1,28 @@
 package Punto1;
 
 public class Punto1 {
-	public static int[][] matriz;
+	private static int[][] matriz;
 	private static int total = 0;
+
+	public static int[][] getMatriz() {
+		return matriz;
+	}
+
+	public static void main(String[] args) {
+		int numeroFilas = 10;
+		crearMatriz(numeroFilas);
+
+		Sumador[] threads = new Sumador[numeroFilas];
+		for (int a = 0; a < numeroFilas; a++)
+			(threads[a] = new Sumador(a)).start();
+
+		for (Sumador sum : threads) {
+			while (!sum.termino());
+			total += sum.getSuma();
+		}
+
+		System.out.println("La suma es: " + total);
+	}
 
 	private static void crearMatriz(int n) {
 		matriz = new int[n][n];
@@ -14,23 +34,6 @@ public class Punto1 {
 				valor++;
 			}
 		}
-	}
-
-	
-	
-	public static void main(String[] args) {
-		int i;
-		int numeroFilas = 10; // Número de filas de la matriz
-		Sumador[] t = new Sumador[numeroFilas]; // Arreglo de threads
-
-		crearMatriz(numeroFilas); // Inicializa la matriz
-		// Complete aquí el código para crear y activar los threads.
-
-		for (int a = 0; a < numeroFilas; a++) {
-			(t[a] = new Sumador(a)).start();
-		}
-
-		System.out.println("La suma es: " + total);
 	}
 
 }

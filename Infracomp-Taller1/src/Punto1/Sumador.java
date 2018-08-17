@@ -11,6 +11,18 @@ public class Sumador extends Thread {
 		this.fin = false;
 	}
 
+	@Override
+	public void run() {
+		int[] fila = Punto1.getMatriz()[id];
+		for (int i = 0; i < fila.length; i++)
+			suma += fila[i];
+		fin = true;
+	}
+
+	public int getSuma() {
+		return suma;
+	}
+
 	public boolean termino() {
 		return fin;
 	}
