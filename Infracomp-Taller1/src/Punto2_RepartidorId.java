@@ -4,7 +4,7 @@ public class Punto2_RepartidorId extends Thread {
 	private static int maxTotal = 0;
 
 	private IDs id;
-	private boolean fin;
+	private volatile boolean fin;
 
 	public Punto2_RepartidorId(IDs id) {
 		this.id = id;
@@ -14,15 +14,14 @@ public class Punto2_RepartidorId extends Thread {
 	@Override
 	public void run() {
 		int fil = id.getId();
+		int max = 0;
 		while (fil != -1) {
-			int max = 0;
 			int[] fila = matriz[fil];
 			for (int i = 0; i < fila.length; i++) {
 				if (fila[i] > max)
 					max = fila[i];
 			}
 
-			System.out.println(this.getName() + ", fila " + fil + ": " + max);
 			max(max);
 			fil = id.getId();
 		}
@@ -39,8 +38,10 @@ public class Punto2_RepartidorId extends Thread {
 	}
 
 	public static void main(String[] args) {
-		int numeroFilas = 100;
+		int numeroFilas = 1000 * 10;
 		crearMatriz(numeroFilas);
+
+		long ini = System.currentTimeMillis();
 		IDs ids = new IDs(numeroFilas);
 
 		int nprocesos = Runtime.getRuntime().availableProcessors();
@@ -49,9 +50,12 @@ public class Punto2_RepartidorId extends Thread {
 			(threads[a] = new Punto2_RepartidorId(ids)).start();
 
 		for (Punto2_RepartidorId sum : threads) {
-			while (!sum.termino())
-				;
+			while (!sum.termino()) {
+				// sdf
+			}
 		}
+
+		System.out.println(System.currentTimeMillis() - ini);
 
 		System.out.println("el maximo es: " + maxTotal);
 		System.out.println("La respuesta debe ser: " + (numeroFilas * numeroFilas - 1));

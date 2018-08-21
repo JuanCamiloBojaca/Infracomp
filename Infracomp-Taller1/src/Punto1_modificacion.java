@@ -5,7 +5,7 @@ public class Punto1_modificacion extends Thread {
 
 	private int id;
 	private int suma;
-	private boolean fin;
+	private volatile boolean fin;
 
 	public Punto1_modificacion(int id) {
 		this.id = id;

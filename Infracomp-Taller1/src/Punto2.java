@@ -4,7 +4,7 @@ public class Punto2 extends Thread {
 	private static int maxTotal = 0;
 
 	private int id;
-	private boolean fin;
+	private volatile boolean fin;
 
 	public Punto2(int id) {
 		this.id = id;

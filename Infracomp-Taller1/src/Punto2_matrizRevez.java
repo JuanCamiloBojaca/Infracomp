@@ -1,11 +1,9 @@
-import java.util.Arrays;
-
 public class Punto2_matrizRevez extends Thread {
 	private static int[][] matriz;
 	private static int maxTotal = 0;
 
 	private int id;
-	private boolean fin;
+	private volatile boolean fin;
 
 	public Punto2_matrizRevez(int id) {
 		this.id = id;
@@ -37,9 +35,8 @@ public class Punto2_matrizRevez extends Thread {
 		int numeroFilas = 100;
 		crearMatriz(numeroFilas);
 
-		for(int[] a:matriz)
-			System.out.println(Arrays.toString(a));
-		
+		long ini = System.currentTimeMillis();
+
 		Punto2_matrizRevez[] threads = new Punto2_matrizRevez[numeroFilas];
 		for (int a = 0; a < numeroFilas; a++)
 			(threads[a] = new Punto2_matrizRevez(a)).start();
@@ -47,6 +44,8 @@ public class Punto2_matrizRevez extends Thread {
 		for (Punto2_matrizRevez sum : threads)
 			while (!sum.termino())
 				;
+
+		System.out.println(System.currentTimeMillis() - ini);
 
 		System.out.println("el maximo es: " + maxTotal);
 		System.out.println("La respuesta debe ser: " + (numeroFilas * numeroFilas - 1));
