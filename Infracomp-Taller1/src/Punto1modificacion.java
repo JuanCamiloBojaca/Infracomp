@@ -1,5 +1,9 @@
-
-public class Punto1_modificacion extends Thread {
+/**
+ * 
+ * @author jc.bojaca
+ *
+ */
+public class Punto1modificacion extends Thread {
 	private static int[][] matriz;
 	private static int total = 0;
 
@@ -7,7 +11,7 @@ public class Punto1_modificacion extends Thread {
 	private int suma;
 	private volatile boolean fin;
 
-	public Punto1_modificacion(int id) {
+	public Punto1modificacion(int id) {
 		this.id = id;
 		this.suma = 0;
 		this.fin = false;
@@ -35,11 +39,11 @@ public class Punto1_modificacion extends Thread {
 		int numeroFilas = 100;
 		crearMatriz(numeroFilas);
 
-		Punto1_modificacion[] threads = new Punto1_modificacion[numeroFilas];
+		Punto1modificacion[] threads = new Punto1modificacion[numeroFilas];
 		for (int a = 0; a < numeroFilas; a++)
-			(threads[a] = new Punto1_modificacion(a)).start();
+			(threads[a] = new Punto1modificacion(a)).start();
 
-		for (Punto1_modificacion sum : threads)
+		for (Punto1modificacion sum : threads)
 			while (!sum.termino())
 				;
 

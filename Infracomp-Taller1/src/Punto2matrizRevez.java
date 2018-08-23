@@ -1,11 +1,16 @@
-public class Punto2_matrizRevez extends Thread {
+/**
+ * 
+ * @author jc.bojaca
+ *
+ */
+public class Punto2matrizRevez extends Thread {
 	private static int[][] matriz;
 	private static int maxTotal = 0;
 
 	private int id;
 	private volatile boolean fin;
 
-	public Punto2_matrizRevez(int id) {
+	public Punto2matrizRevez(int id) {
 		this.id = id;
 		this.fin = false;
 	}
@@ -37,11 +42,11 @@ public class Punto2_matrizRevez extends Thread {
 
 		long ini = System.currentTimeMillis();
 
-		Punto2_matrizRevez[] threads = new Punto2_matrizRevez[numeroFilas];
+		Punto2matrizRevez[] threads = new Punto2matrizRevez[numeroFilas];
 		for (int a = 0; a < numeroFilas; a++)
-			(threads[a] = new Punto2_matrizRevez(a)).start();
+			(threads[a] = new Punto2matrizRevez(a)).start();
 
-		for (Punto2_matrizRevez sum : threads)
+		for (Punto2matrizRevez sum : threads)
 			while (!sum.termino())
 				;
 

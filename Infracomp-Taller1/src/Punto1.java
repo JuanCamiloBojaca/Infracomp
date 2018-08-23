@@ -1,4 +1,8 @@
-
+/**
+ * 
+ * @author jc.bojaca
+ *
+ */
 public class Punto1 extends Thread {
 	private static int[][] matriz;
 	private static int total = 0;

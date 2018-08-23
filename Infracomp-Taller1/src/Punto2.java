@@ -1,4 +1,8 @@
-
+/**
+ * 
+ * @author jc.bojaca
+ *
+ */
 public class Punto2 extends Thread {
 	private static int[][] matriz;
 	private static int maxTotal = 0;

@@ -1,12 +1,16 @@
-
-public class Punto2_RepartidorId extends Thread {
+/**
+ * 
+ * @author jc.bojaca
+ *
+ */
+public class Punto2repartidorid extends Thread {
 	private static int[][] matriz;
 	private static int maxTotal = 0;
 
 	private IDs id;
 	private volatile boolean fin;
 
-	public Punto2_RepartidorId(IDs id) {
+	public Punto2repartidorid(IDs id) {
 		this.id = id;
 		this.fin = false;
 	}
@@ -45,11 +49,11 @@ public class Punto2_RepartidorId extends Thread {
 		IDs ids = new IDs(numeroFilas);
 
 		int nprocesos = Runtime.getRuntime().availableProcessors();
-		Punto2_RepartidorId[] threads = new Punto2_RepartidorId[nprocesos];
+		Punto2repartidorid[] threads = new Punto2repartidorid[nprocesos];
 		for (int a = 0; a < nprocesos; a++)
-			(threads[a] = new Punto2_RepartidorId(ids)).start();
+			(threads[a] = new Punto2repartidorid(ids)).start();
 
-		for (Punto2_RepartidorId sum : threads) {
+		for (Punto2repartidorid sum : threads) {
 			while (!sum.termino()) {
 				// sdf
 			}
