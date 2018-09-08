@@ -39,7 +39,7 @@ public class Buffer {
 
 	public static void main(String[] args) {
 		CAPACIDAD = 10;
-		int clientes = 5;
+		int clientes = 30;
 		int servidores = 2;
 
 		lecturasDisponibles = 0;
