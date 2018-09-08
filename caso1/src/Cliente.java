@@ -1,13 +1,15 @@
-package caso1;
 
 import java.util.Random;
 
 public class Cliente extends Thread {
+	private Buffer buffer;
 	private int nSolicitudes;
 
-	public Cliente(int nSolicitudes, int i) {
+	public Cliente(int id, int nSolicitudes, Buffer buffer) {
 		this.nSolicitudes = nSolicitudes;
-		setName("cliente_" + i);
+		this.buffer = buffer;
+		buffer.nuevoCliente();
+		setName("Cliente_" + id);
 	}
 
 	@Override
@@ -18,10 +20,10 @@ public class Cliente extends Thread {
 			Mensaje mensaje = new Mensaje();
 			mensaje.setNumero(numero);
 
-			while (!Buffer.permisoEscribir()) {
+			while (!buffer.permisoEscribir()) {
 				yield();
 			}
-			Buffer.escribir(mensaje);
+			buffer.escribir(mensaje);
 
 			try {
 				synchronized (mensaje) {
@@ -32,6 +34,6 @@ public class Cliente extends Thread {
 				e.printStackTrace();
 			}
 		}
-
+		buffer.terminarCliente();
 	}
 }
