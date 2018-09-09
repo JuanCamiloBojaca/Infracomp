@@ -1,5 +1,3 @@
-import java.util.Vector;
-
 public class Buffer {
 	private Mensaje[] colaMensajes;
 	public volatile int lecturasDisponibles;

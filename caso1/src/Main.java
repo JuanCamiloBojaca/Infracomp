@@ -19,17 +19,16 @@ public class Main {
 
 			for (int i = 0; i < serversSize; i++)
 				(servers[i] = new Servidor(i + 1, buffer)).start();
-			
+
 			for (Cliente cliente : clients)
 				cliente.join();
 
-			System.out.println("termiino el proceso de clientes");
-			
+			System.out.println("termino los procesos de clientes");
+
 			for (Servidor servidor : servers)
 				servidor.join();
 
-			System.out.println("asd");
-			
+			System.out.println("termino los procesos de seridores");
 
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();

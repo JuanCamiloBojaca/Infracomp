@@ -1,10 +1,11 @@
 
 public class Servidor extends Thread {
-	public volatile boolean permiso;
+	private volatile boolean permiso;
 	private Buffer buffer;
 
 	public Servidor(int id, Buffer buffer) {
 		this.buffer = buffer;
+		setPriority(NORM_PRIORITY + 1);
 		setName("Servidor_" + id);
 	}
 
@@ -12,23 +13,24 @@ public class Servidor extends Thread {
 	public void run() {
 		Mensaje mensaje = null;
 		Ext: while (true) {
-			boolean a, b;
+			boolean a;
+
 			synchronized (buffer) {
-				a = buffer.lecturasDisponibles == 0;
-				if (!a)
+				permiso = buffer.lecturasDisponibles == 0;
+				if (!permiso)
 					buffer.lecturasDisponibles--;
 
 			}
-			while (a) {
+			while (permiso) {
 				synchronized (buffer) {
-					b = buffer.clientesActivos == 0;
+					a = buffer.clientesActivos == 0;
 				}
-				if (b)
+				if (a)
 					break Ext;
 				yield();
 				synchronized (buffer) {
-					a = buffer.lecturasDisponibles == 0;
-					if (!a)
+					permiso = buffer.lecturasDisponibles == 0;
+					if (!permiso)
 						buffer.lecturasDisponibles--;
 				}
 			}

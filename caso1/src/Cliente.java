@@ -18,18 +18,17 @@ public class Cliente extends Thread {
 				Mensaje mensaje = new Mensaje();
 				mensaje.setNumero(numero);
 
-				boolean a;
 				synchronized (buffer) {
-					a = buffer.escriturasDisponibles == 0;
-					if (!a)
+					permiso = buffer.escriturasDisponibles == 0;
+					if (!permiso)
 						buffer.escriturasDisponibles--;
 
 				}
-				while (a) {
+				while (permiso) {
 					yield();
 					synchronized (buffer) {
-						a = buffer.escriturasDisponibles == 0;
-						if (!a)
+						permiso = buffer.escriturasDisponibles == 0;
+						if (!permiso)
 							buffer.escriturasDisponibles--;
 					}
 				}
