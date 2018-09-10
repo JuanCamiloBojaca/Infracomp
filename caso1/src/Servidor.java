@@ -11,6 +11,11 @@ public class Servidor extends Thread {
 		Ext: while (true) {
 			while (!buffer.permisoLeer()) {
 				yield();
+				try {
+					sleep(2);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				if (!buffer.hayClientes())
 					break Ext;
 			}

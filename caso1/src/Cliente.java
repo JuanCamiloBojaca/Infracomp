@@ -18,6 +18,11 @@ public class Cliente extends Thread {
 
 			while (!buffer.permisoEscribir()) {
 				yield();
+				try {
+					sleep(2);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 			buffer.escribir(mensaje);
 
@@ -25,7 +30,7 @@ public class Cliente extends Thread {
 				synchronized (mensaje) {
 					mensaje.wait();
 				}
-				System.out.println(getName() + " mensaje " + numero + " - " + mensaje.getNumero());
+				//System.out.println(getName() + " mensaje " + numero + " - " + mensaje.getNumero());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
