@@ -1,8 +1,8 @@
-buferSize: 5
-servers: 5
-clients: 10
-10
-10
+buferSize: 1
+servers: 1
+clients: 2
+10000
+10000
 10
 10
 10

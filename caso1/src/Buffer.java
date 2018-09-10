@@ -1,89 +1,54 @@
-import java.lang.reflect.Array;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Buffer {
-	private Queue<Mensaje> queue;
-	private volatile int n;
-	private Object N = new Object();
-	private final int LIMIT;
-	private Object esc = new Object();
-	private Object ret = new Object();
+	private Queue<Mensaje> mensajes = new LinkedList<>();
+	private volatile int lecturasDisponibles;
+	private volatile int escriturasDisponibles;
+	private int clientesActivos;
 
-	public Buffer(int size, int clientes) {
-		queue = new Queue<>(size, Mensaje.class);
-		LIMIT = size;
-		n = 0;
+	public Buffer(int size) {
+		escriturasDisponibles = size;
+		lecturasDisponibles = 0;
+		clientesActivos = 0;
 	}
 
-	public void escribir(Mensaje mensaje) {
-		synchronized (esc) {
-			boolean a;
-			synchronized (N) {
-				a = n == LIMIT;
-			}
-			while (a) {
-				Thread.yield();
-				synchronized (N) {
-					a = n == LIMIT;
-				}
-			}
-			queue.add(mensaje);
-			synchronized (N) {
-				n++;
-			}
-		}
+	public synchronized void nuevoCliente() {
+		clientesActivos++;
 	}
 
-	public Mensaje retirar() {
-		synchronized (ret) {
-			boolean a;
-			synchronized (N) {
-				a = n == 0;
-			}
-			while (a) {
-				Thread.yield();
-				synchronized (N) {
-					a = n == 0;
-				}
-			}
-			synchronized (N) {
-				n--;
-			}
-			return queue.take();
-		}
-
+	public synchronized void terminarCliente() {
+		clientesActivos--;
 	}
 
-	public class Queue<T> {
-		private final int mod;
-		private volatile int escritura;
-		private volatile int lectura;
-		private T[] array;
+	public synchronized boolean hayClientes() {
+		return clientesActivos > 0;
+	}
 
-		@SuppressWarnings("unchecked")
-		public Queue(int size, Class<T> clazz) {
-			array = (T[]) Array.newInstance(clazz, size + 1);
-			mod = size + 1;
-			escritura = 0;
-			lectura = 0;
+	public synchronized boolean permisoEscribir() {
+		if (escriturasDisponibles > 0) {
+			escriturasDisponibles--;
+			return true;
 		}
+		return false;
+	}
 
-		public synchronized boolean isEmpty() {
-			return escritura == lectura;
-		}
+	public synchronized void escribir(Mensaje mensaje) {
+		mensajes.add(mensaje);
+		lecturasDisponibles++;
+	}
 
-		public synchronized boolean isFull() {
-			return (escritura + 1) % mod == lectura;
+	public synchronized boolean permisoLeer() {
+		if (lecturasDisponibles > 0) {
+			lecturasDisponibles--;
+			return true;
 		}
+		return false;
+	}
 
-		public synchronized void add(T t) {
-			array[escritura] = t;
-			escritura = (escritura + 1) % mod;
-		}
-
-		public synchronized T take() {
-			T t = array[lectura];
-			lectura = (lectura + 1) % mod;
-			return t;
-		}
+	public synchronized Mensaje retirar() {
+		Mensaje ans = mensajes.poll();
+		escriturasDisponibles++;
+		return ans;
 	}
 }

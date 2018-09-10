@@ -8,18 +8,17 @@ public class Servidor extends Thread {
 
 	@Override
 	public void run() {
-		try {
-			Mensaje mensaje = null;
-			while (true) {
-				mensaje = buffer.retirar();
-
-				synchronized (mensaje) {
-					mensaje.setNumero(mensaje.getNumero() + 1);
-					mensaje.notify();
-				}
+		Ext: while (true) {
+			while (!buffer.permisoLeer()) {
+				yield();
+				if (!buffer.hayClientes())
+					break Ext;
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			Mensaje mensaje = buffer.retirar();
+			mensaje.setNumero(mensaje.getNumero() + 1);
+			synchronized (mensaje) {
+				mensaje.notify();
+			}
 		}
 	}
 

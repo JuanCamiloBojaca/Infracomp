@@ -1,33 +1,36 @@
-
 public class Cliente extends Thread {
 	private Buffer buffer;
 	private int nSolicitudes;
-	public volatile boolean permiso;
 
 	public Cliente(int id, int nSolicitudes, Buffer buffer) {
 		this.nSolicitudes = nSolicitudes;
 		this.buffer = buffer;
+		buffer.nuevoCliente();
 		setName("Cliente_" + id);
 	}
 
 	@Override
 	public void run() {
-		Mensaje mensaje;
-		try {
-			for (int i = 0; i < nSolicitudes; i++) {
+		for (int i = 0; i < nSolicitudes; i++) {
+			int numero = i + 1;
+			Mensaje mensaje = new Mensaje();
+			mensaje.setNumero(numero);
 
-				mensaje = new Mensaje(i + 1);
-				buffer.escribir(mensaje);
+			while (!buffer.permisoEscribir()) {
+				yield();
+			}
+			buffer.escribir(mensaje);
 
+			try {
 				synchronized (mensaje) {
 					mensaje.wait();
 				}
-				System.out.println(getName() + "(" + (i + 1) + "," + mensaje.getNumero() + ")");
+				System.out.println(getName() + " mensaje " + numero + " - " + mensaje.getNumero());
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-
-			System.out.println("fin " + getName());
-		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
+		buffer.terminarCliente();
+		System.out.println(getName());
 	}
 }
