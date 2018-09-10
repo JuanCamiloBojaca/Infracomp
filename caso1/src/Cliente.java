@@ -12,39 +12,17 @@ public class Cliente extends Thread {
 
 	@Override
 	public void run() {
+		Mensaje mensaje;
 		try {
 			for (int i = 0; i < nSolicitudes; i++) {
-				int numero = i + 1;
-				Mensaje mensaje = new Mensaje();
-				mensaje.setNumero(numero);
 
-				synchronized (buffer) {
-					permiso = buffer.escriturasDisponibles == 0;
-					if (!permiso)
-						buffer.escriturasDisponibles--;
-
-				}
-				while (permiso) {
-					yield();
-					synchronized (buffer) {
-						permiso = buffer.escriturasDisponibles == 0;
-						if (!permiso)
-							buffer.escriturasDisponibles--;
-					}
-				}
-				synchronized (buffer) {
-					buffer.escribir(mensaje);
-					buffer.lecturasDisponibles++;
-				}
+				mensaje = new Mensaje(i + 1);
+				buffer.escribir(mensaje);
 
 				synchronized (mensaje) {
 					mensaje.wait();
 				}
-				System.out.println(getName() + " (" + numero + " -> " + mensaje.getNumero() + ")");
-			}
-
-			synchronized (buffer) {
-				buffer.clientesActivos--;
+				System.out.println(getName() + "(" + (i + 1) + "," + mensaje.getNumero() + ")");
 			}
 
 			System.out.println("fin " + getName());
