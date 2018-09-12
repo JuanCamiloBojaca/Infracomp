@@ -1,6 +1,8 @@
+//recibe solicitudes
 public class Servidor extends Thread {
 	private Buffer buffer;
 
+	// constructor
 	public Servidor(int id, Buffer buffer) {
 		this.buffer = buffer;
 		setName("Servidor_" + id);
@@ -8,21 +10,16 @@ public class Servidor extends Thread {
 
 	@Override
 	public void run() {
-		Ext: while (true) {
+		Ext: while (true) { 
 			while (!buffer.permisoLeer()) {
-				yield();
-				try {
-					sleep(2);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				yield(); // si no hay permisos para leer, vaya a la cola de procesos y espere
 				if (!buffer.hayClientes())
-					break Ext;
+					break Ext; // si no hay clientes, termina el while(true)
 			}
-			Mensaje mensaje = buffer.retirar();
-			mensaje.setNumero(mensaje.getNumero() + 1);
+			Mensaje mensaje = buffer.retirar(); // saque el mensaje del buffer
+			mensaje.setNumero(mensaje.getNumero() + 1); // modifica el mensaje
 			synchronized (mensaje) {
-				mensaje.notify();
+				mensaje.notify(); // notifique que el mensaje termino y se puede imprimir, se notifica al cliente
 			}
 		}
 	}
