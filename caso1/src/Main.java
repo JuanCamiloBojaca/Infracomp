@@ -1,3 +1,4 @@
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -6,30 +7,32 @@ public class Main {
 
 	public static void main(String[] args) {
 		try (BufferedReader br = new BufferedReader(new FileReader("./data/Values.txt"))) {
-			int bufferSize = Integer.parseInt(br.readLine().split(":")[1].trim());
+			Buffer buffer = new Buffer(Integer.parseInt(br.readLine().split(":")[1].trim()));
+
 			int serversSize = Integer.parseInt(br.readLine().split(":")[1].trim());
 			Servidor[] servers = new Servidor[serversSize];
+			for (int i = 0; i < serversSize; i++)
+				servers[i] = new Servidor(i, buffer);
+			
 			int clientsSize = Integer.parseInt(br.readLine().split(":")[1].trim());
 			Cliente[] clients = new Cliente[clientsSize];
-
-			Buffer buffer = new Buffer(bufferSize, clientsSize);
-
 			for (int i = 0; i < clientsSize; i++)
-				(clients[i] = new Cliente(i + 1, Integer.parseInt(br.readLine()), buffer)).start();
+				(clients[i] = new Cliente(i, Integer.parseInt(br.readLine()), buffer)).start();
 
-			for (int i = 0; i < serversSize; i++)
-				(servers[i] = new Servidor(i + 1, buffer)).start();
-
-			for (Cliente cliente : clients)
-				cliente.join();
-
-			System.out.println("termino los procesos de clientes");
+			for (Servidor servidor : servers)
+				servidor.start();
 
 			for (Servidor servidor : servers)
 				servidor.join();
+			
+			System.out.println("servidores fin");
+			
+			for (Cliente cliente : clients)
+				cliente.join();
+			
+			System.out.println("clientes fin");
 
-			System.out.println("termino los procesos de seridores");
-
+			
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
