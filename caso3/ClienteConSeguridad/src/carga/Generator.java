@@ -26,7 +26,7 @@ public class Generator {
 		firstClient();
 
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd_hh-mm");
-		String path = "./Report/" + format.format(new Date());
+		String path = "./Reports/" + format.format(new Date());
 		(new File(path)).mkdirs();
 
 		for (CaseDescription des : cases) {
@@ -60,7 +60,7 @@ public class Generator {
 				ver.println("-----------CASO " + (i + 1) + "-----------");
 				runTest(ver, con, otr);
 				System.out.println("----------------------------");
-				Thread.sleep(3000);
+				Thread.sleep(4000);
 			}
 
 			con.flush();
