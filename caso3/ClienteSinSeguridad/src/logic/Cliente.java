@@ -1,14 +1,11 @@
 package logic;
 
-import java.io.ByteArrayInputStream;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
-import java.security.PublicKey;
 import java.security.Security;
-import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import javax.xml.bind.DatatypeConverter;
 
@@ -57,15 +54,8 @@ public class Cliente {
 
 			// Etapa 3
 			respErronea(Const.ok.getValue(), canal.recive());
-			String r = canal.recive().toString();
-			certificadoEnBytes = DatatypeConverter.parseHexBinary(r);
-			try (ByteArrayInputStream in = new ByteArrayInputStream(certificadoEnBytes)) {
-				certificado = (X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(in);
-			}
-
-			certificado.checkValidity(); // mira que el certificado no esta vencido
-			PublicKey llaveServidor = certificado.getPublicKey();
-			certificado.verify(llaveServidor); // verifica la firma
+			//recibe el certificado.
+			canal.recive().toString();
 			canal.send(Const.ok);
 			long ini = System.nanoTime();
 
