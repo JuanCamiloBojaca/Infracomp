@@ -1,3 +1,0 @@
-puerto = 8080
-host = localHost
-algoritmo = AES:RSA:HMACSHA1
