@@ -103,9 +103,9 @@ public class Generator {
 	public static void main(String[] args) {
 		try {
 			List<CaseDescription> set = new LinkedList<>();
-			set.add(new CaseDescription(20, 100, 10, "20_100"));
-			set.add(new CaseDescription(10, 100, 10, "10_100"));
-			set.add(new CaseDescription(5, 100, 10, "5_100"));
+			set.add(new CaseDescription(400, 20, 10, "400_20"));
+			set.add(new CaseDescription(200, 40, 10, "200_40"));
+			set.add(new CaseDescription(80, 100, 10, "80_100"));
 			new Generator(set);
 
 		} catch (Exception e) {
