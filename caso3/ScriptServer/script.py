@@ -21,7 +21,8 @@ def load(casos, path):
                     subs[indice - 1].append(x[:-1].replace('.', ','))
             else:
                 if cont < 40:
-                    subs[indice - 1].append(x[:-1].replace('.', ','))
+                    if not (x.startswith('<') or x.startswith('-')):
+                        subs[indice - 1].append(x[:-1].replace('.', ','))
                 else:
                     cliente += 1
                     estado, cont = 0, 0
